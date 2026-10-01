@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { PresentacionFormData } from '@/types';
 import { calcularEdad, formatearTelefono } from '@/lib/utils';
 import { crearPresentacion } from '@/lib/presentacionesService';
-import { Loader2, Calendar, User, Phone, Heart, CheckCircle2 } from 'lucide-react';
+import { Loader2, Calendar, User, Phone, Baby, CheckCircle2 } from 'lucide-react';
 
 interface FormularioProps {
   onSuccess: (data: PresentacionFormData) => void;
@@ -89,7 +89,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
       {/* Datos del niño o niña */}
       <div className="space-y-4">
         <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
-          <Heart className="w-4 h-4 text-blue-600" />
+          <Baby className="w-4 h-4 text-blue-600" />
           <h2 className="text-sm font-bold text-slate-800">
             Datos del niño o niña
           </h2>
@@ -107,7 +107,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
               required
               value={formData.nombre_nino}
               onChange={(e) => setFormData((prev) => ({ ...prev, nombre_nino: e.target.value }))}
-              placeholder="Escriba el nombre completo del niño o niña"
+              placeholder="Nombre completo del niño o niña"
               className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all placeholder:text-slate-400"
             />
           </div>
@@ -134,16 +134,15 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
 
           <div>
             <label htmlFor="edad_nino" className="block text-xs font-semibold text-slate-700 mb-1">
-              Edad del niño o niña <span className="text-red-500">*</span>
+              Edad del niño o niña
             </label>
             <input
               id="edad_nino"
               type="text"
-              required
+              readOnly
               value={formData.edad_nino}
-              onChange={(e) => setFormData((prev) => ({ ...prev, edad_nino: e.target.value }))}
-              placeholder="Se calcula automáticamente o ingrésela"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all placeholder:text-slate-400"
+              placeholder="Se calcula automáticamente"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-slate-800 text-sm focus:outline-none cursor-default placeholder:text-slate-400 font-medium"
             />
           </div>
         </div>
@@ -251,7 +250,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
           ) : (
             <>
               <CheckCircle2 className="w-4 h-4" />
-              <span>Enviar registro de presentación</span>
+              <span>Enviar registro</span>
             </>
           )}
         </button>

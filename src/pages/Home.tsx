@@ -30,9 +30,6 @@ export const Home: React.FC = () => {
               <span className="text-sm sm:text-base font-bold text-slate-900 block leading-tight tracking-tight">
                 Monte de Dios
               </span>
-              <span className="text-xs text-slate-500 block leading-tight mt-0.5">
-                Presentación de niños
-              </span>
             </div>
           </div>
         </div>
@@ -41,15 +38,13 @@ export const Home: React.FC = () => {
       {/* Contenido principal del formulario */}
       <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-8 sm:py-12">
         <div className="text-center mb-8 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/70 text-blue-800 text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Inscripción para presentación</span>
-          </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             Presentación de niños
           </h1>
-          <p className="text-slate-600 text-sm max-w-lg mx-auto leading-relaxed">
-            Aquí puede completar los datos para la presentación de su niño o niña.
+          <p className="text-slate-600 text-sm max-w-md mx-auto leading-relaxed">
+            Aquí puede completar los datos para la presentación
+            <br />
+            de su niño o niña.
           </p>
         </div>
 
