@@ -42,9 +42,9 @@ export const Home: React.FC = () => {
             Presentación de niños
           </h1>
           <p className="text-slate-600 text-sm max-w-md mx-auto leading-relaxed">
-            Aquí puede completar los datos para la presentación
+            Complete los datos para la
             <br />
-            de su niño o niña.
+            presentación de su niño o niña.
           </p>
         </div>
 
