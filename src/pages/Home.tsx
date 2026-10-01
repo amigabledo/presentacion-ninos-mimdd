@@ -28,7 +28,7 @@ export const Home: React.FC = () => {
             </div>
             <div>
               <span className="text-sm sm:text-base font-bold text-slate-900 block leading-tight tracking-tight">
-                Monte de Dios
+                Ministerio Internacional Monte de Dios
               </span>
             </div>
           </div>

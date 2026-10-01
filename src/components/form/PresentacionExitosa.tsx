@@ -29,11 +29,14 @@ export const PresentacionExitosa: React.FC<PresentacionExitosaProps> = ({ data, 
 
       <div className="space-y-2">
         <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-          Registro completado con éxito
+          Registro exitoso
         </h2>
         <p className="text-slate-600 text-sm max-w-md mx-auto leading-relaxed">
-          Usted ha completado satisfactoriamente la inscripción para la presentación de{' '}
-          <strong className="text-slate-900">{data.nombre_nino}</strong>.
+          Ha completado satisfactoriamente
+          <br />
+          la inscripción para la presentación de
+          <br />
+          <strong className="text-slate-900">{data.nombre_nino.trim()}</strong>.
         </p>
       </div>
 
