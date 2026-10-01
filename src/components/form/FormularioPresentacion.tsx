@@ -134,7 +134,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
 
           <div>
             <label htmlFor="edad_nino" className="block text-xs font-semibold text-slate-700 mb-1">
-              Edad del niño o niña
+              Edad del niño o niña <span className="text-red-500">*</span>
             </label>
             <input
               id="edad_nino"
