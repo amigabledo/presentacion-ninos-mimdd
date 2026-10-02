@@ -28,6 +28,16 @@ Plataforma oficial para la inscripción pública y gestión administrativa de la
 - **Base de datos en Supabase**:
   - Tabla aislada e independiente `public.presentaciones_ninos`.
   - Políticas de seguridad por fila (RLS) y concesión explícita de permisos (`GRANT`).
+- **Usuarios autorizados para gestión**:
+  - `marcos`
+  - `kramos`
+  - `admin`
+  - `servidor`
+
+---
+
+## 2. Historial de cambios
+- **02/10/2026**: Se actualizó el usuario administrador `cicatrices` por `kramos` para unificar los accesos institucionales con la cuenta de Diác. Katherine Ramos.
 
 ---
 

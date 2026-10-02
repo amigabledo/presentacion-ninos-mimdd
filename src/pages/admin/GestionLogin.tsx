@@ -12,7 +12,7 @@ export const GestionLogin: React.FC = () => {
     e.preventDefault();
     const u = username.trim().toLowerCase();
     // Acceso para administradores o servidores autorizados
-    if (u === 'marcos' || u === 'cicatrices' || u === 'admin' || u === 'servidor') {
+    if (u === 'marcos' || u === 'kramos' || u === 'admin' || u === 'servidor') {
       localStorage.setItem('mimdd_admin_auth', JSON.stringify({ user: u, time: Date.now() }));
       navigate('/gestion');
     } else {
