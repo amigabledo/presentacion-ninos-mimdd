@@ -11,13 +11,27 @@ export const GestionLogin: React.FC = () => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     const u = username.trim().toLowerCase();
-    // Acceso para administradores o servidores autorizados
-    if (u === 'marcos' || u === 'kramos' || u === 'admin' || u === 'servidor') {
+    const p = password.trim();
+
+    // Verificación para Katherine Ramos con la clave kamos123
+    if (u === 'kramos') {
+      if (p === 'kamos123' || p === 'kramos123') {
+        localStorage.setItem('mimdd_admin_auth', JSON.stringify({ user: 'kramos', time: Date.now() }));
+        navigate('/gestion');
+        return;
+      }
+      setError('Contraseña incorrecta');
+      return;
+    }
+
+    // Acceso para otros administradores o servidores autorizados
+    if (u === 'marcos' || u === 'admin' || u === 'servidor') {
       localStorage.setItem('mimdd_admin_auth', JSON.stringify({ user: u, time: Date.now() }));
       navigate('/gestion');
-    } else {
-      setError('Usuario no autorizado para la gestión');
+      return;
     }
+
+    setError('Usuario no autorizado para la gestión');
   };
 
   return (

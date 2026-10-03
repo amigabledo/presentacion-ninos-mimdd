@@ -4,13 +4,14 @@ import { fetchPresentaciones, actualizarEstadoPresentacion } from '@/lib/present
 import type { PresentacionNino, EstadoPresentacion } from '@/types';
 import { MetricasPanel } from './MetricasPanel';
 import { TablaRegistros } from './TablaRegistros';
-import { Search, Download, RefreshCw, LogOut } from 'lucide-react';
+import { Search, Upload, RefreshCw, LogOut, User } from 'lucide-react';
 
 export const GestionPanel: React.FC = () => {
   const [registros, setRegistros] = useState<PresentacionNino[]>([]);
   const [filtroTexto, setFiltroTexto] = useState('');
   const [filtroEstado, setFiltroEstado] = useState<string>('todos');
   const [cargando, setCargando] = useState(true);
+  const [usuarioActual, setUsuarioActual] = useState('Administrador');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +19,18 @@ export const GestionPanel: React.FC = () => {
     if (!auth) {
       navigate('/gestion/login');
       return;
+    }
+    try {
+      const parsed = JSON.parse(auth);
+      if (parsed.user === 'kramos') {
+        setUsuarioActual('Katherine Ramos');
+      } else if (parsed.user === 'marcos') {
+        setUsuarioActual('Marcos');
+      } else {
+        setUsuarioActual(parsed.user || 'Administrador');
+      }
+    } catch {
+      // Ignorar
     }
     cargarDatos();
   }, [navigate]);
@@ -112,24 +125,30 @@ export const GestionPanel: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">
+              <User className="w-3.5 h-3.5 text-blue-600" />
+              <span>{usuarioActual}</span>
+            </div>
+
             <button
               onClick={exportarCSV}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-xs transition-colors"
+              title="Exportar archivo CSV con flecha hacia arriba"
             >
-              <Download className="w-3.5 h-3.5" />
+              <Upload className="w-3.5 h-3.5 text-blue-600" />
               <span>Exportar</span>
             </button>
             <button
               onClick={cargarDatos}
-              className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100"
-              title="Actualizar"
+              className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+              title="Actualizar datos"
             >
-              <RefreshCw className="w-4 h-4" />
+              <RefreshCw className={`w-4 h-4 ${cargando ? 'animate-spin' : ''}`} />
             </button>
             <button
               onClick={handleCerrarSesion}
-              className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+              className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
               title="Cerrar sesión"
             >
               <LogOut className="w-4 h-4" />

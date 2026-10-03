@@ -38,6 +38,10 @@ Plataforma oficial para la inscripción pública y gestión administrativa de la
 
 ## 2. Historial de cambios
 - **03/10/2026**:
+  - Configuración de clave de acceso específica `kamos123` para la administradora `kramos`.
+  - Botón de exportar CSV actualizado con icono de flecha hacia arriba.
+  - Diseño responsivo dual en el panel de gestión: tarjetas limpias sin desbordes en dispositivos móviles y tabla estructurada en tablets y computadoras.
+  - Apertura de permisos RLS para lectura y actualización directa desde la consola PostgREST en Supabase.
   - Aplicación de la paleta cromática del volante oficial (celeste suave y lila pastel).
   - Fondo ambiental con formas pastel difuminadas estilo nubes y marco redondeado con borde celeste.
   - Ajuste del encabezado institucional a "Ministerio Internacional Monte de Dios" y subtítulo a dos líneas.
