@@ -38,6 +38,9 @@ Plataforma oficial para la inscripción pública y gestión administrativa de la
 
 ## 2. Historial de cambios
 - **03/10/2026**:
+  - Actualización del subtítulo de la página de inicio indicando la fecha de presentación para el domingo 25/octubre/2026.
+  - Validación estricta y obligatoriedad en todos los campos del formulario de inscripción, incluyendo verificación de 10 dígitos telefónicos.
+  - Remoción del pie de página con información institucional en la página de inicio pública.
   - Actualización del nombre en toda la plataforma a "Ministerio Internacional Monte de Dios" (incluyendo inicio de sesión de gestión y cabecera del panel).
   - Configuración de clave de acceso específica `kamos123` para la administradora `kramos`.
   - Botón de exportar CSV actualizado con icono de flecha hacia arriba.

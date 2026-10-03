@@ -59,7 +59,19 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
       !formData.nombre_madre.trim() ||
       !formData.telefono_madre.trim()
     ) {
-      setErrorMessage('Por favor complete todos los campos obligatorios para continuar.');
+      setErrorMessage('Todos los campos son obligatorios para continuar.');
+      return;
+    }
+
+    const telPadreDigitos = formData.telefono_padre.replace(/\D/g, '');
+    if (telPadreDigitos.length < 10) {
+      setErrorMessage('Por favor ingrese los 10 dígitos del teléfono del padre.');
+      return;
+    }
+
+    const telMadreDigitos = formData.telefono_madre.replace(/\D/g, '');
+    if (telMadreDigitos.length < 10) {
+      setErrorMessage('Por favor ingrese los 10 dígitos del teléfono de la madre.');
       return;
     }
 
@@ -80,6 +92,13 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="flex items-center justify-between pb-1 border-b border-slate-100">
+        <span className="text-xs font-semibold text-slate-500">Inscripción</span>
+        <span className="text-xs font-medium text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200/60">
+          Todos los campos son obligatorios
+        </span>
+      </div>
+
       {errorMessage && (
         <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700">
           {errorMessage}
@@ -139,10 +158,11 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
             <input
               id="edad_nino"
               type="text"
-              readOnly
+              required
               value={formData.edad_nino}
-              placeholder="Se calcula automáticamente"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-slate-800 text-sm focus:outline-none cursor-default placeholder:text-slate-400 font-medium"
+              onChange={(e) => setFormData((prev) => ({ ...prev, edad_nino: e.target.value }))}
+              placeholder="Se calcula al seleccionar fecha"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b82f6]/30 focus:border-[#3b82f6] transition-all placeholder:text-slate-400 font-medium"
             />
           </div>
         </div>
@@ -187,6 +207,8 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
                 id="telefono_padre"
                 type="tel"
                 required
+                minLength={14}
+                maxLength={14}
                 value={formData.telefono_padre}
                 onChange={handleTelefonoPadreChange}
                 placeholder="(809) 000-0000"
@@ -226,6 +248,8 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
                 id="telefono_madre"
                 type="tel"
                 required
+                minLength={14}
+                maxLength={14}
                 value={formData.telefono_madre}
                 onChange={handleTelefonoMadreChange}
                 placeholder="(809) 000-0000"

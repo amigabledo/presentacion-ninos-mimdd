@@ -50,7 +50,9 @@ export const Home: React.FC = () => {
           <p className="text-slate-600 text-sm max-w-md mx-auto leading-relaxed">
             Complete los datos para la
             <br />
-            presentación de su niño o niña.
+            presentación de su niño o niña
+            <br />
+            el domingo 25/octubre/2026:
           </p>
         </div>
 
@@ -66,12 +68,6 @@ export const Home: React.FC = () => {
           )}
         </div>
       </main>
-
-      {/* Pie de página institucional */}
-      <footer className="border-t border-sky-100/80 bg-white/70 backdrop-blur-sm py-6 text-center text-xs text-slate-500 space-y-1 relative z-10">
-        <p>Presentación de niños</p>
-        <p>Ministerio Internacional Monte de Dios</p>
-      </footer>
     </div>
   );
 };
