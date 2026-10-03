@@ -92,12 +92,6 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="flex items-center justify-between pb-1 border-b border-slate-100">
-        <span className="text-xs font-semibold text-slate-500">Inscripción</span>
-        <span className="text-xs font-medium text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200/60">
-          Todos los campos son obligatorios
-        </span>
-      </div>
 
       {errorMessage && (
         <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700">

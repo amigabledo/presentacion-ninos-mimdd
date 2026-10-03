@@ -16,9 +16,9 @@ export const Home: React.FC = () => {
 
       {/* Barra superior institucional */}
       <header className="bg-white/85 backdrop-blur-md border-b border-sky-100/80 sticky top-0 z-30 shadow-xs">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl overflow-hidden bg-white border border-sky-100 flex items-center justify-center p-1 shadow-xs">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-center">
+          <div className="flex items-center justify-center gap-3 text-center">
+            <div className="w-10 h-10 rounded-xl overflow-hidden bg-white border border-sky-100 flex items-center justify-center p-1 shadow-xs shrink-0">
               <picture>
                 <source srcSet="/logo.webp" type="image/webp" />
                 <img
@@ -44,8 +44,8 @@ export const Home: React.FC = () => {
       <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-8 sm:py-12 relative z-10">
         <div className="text-center mb-8 space-y-2">
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-            <span className="text-[#3b82f6]">Presentación </span>
-            <span className="text-[#a855f7]">de niños</span>
+            <span className="text-[#a855f7]">Presentación </span>
+            <span className="text-[#3b82f6]">de niños</span>
           </h1>
           <p className="text-slate-600 text-sm max-w-md mx-auto leading-relaxed">
             Complete los datos para la

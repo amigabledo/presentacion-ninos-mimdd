@@ -38,6 +38,9 @@ Plataforma oficial para la inscripción pública y gestión administrativa de la
 
 ## 2. Historial de cambios
 - **03/10/2026**:
+  - Centrado del logotipo institucional y el nombre "Ministerio Internacional Monte de Dios" en la barra superior.
+  - Inversión de colores en el título principal: "Presentación" en rosa y "de niños" en azul.
+  - Remoción de los textos informativos superiores del formulario ("Inscripción" y "Todos los campos son obligatorios").
   - Actualización del subtítulo de la página de inicio indicando la fecha de presentación para el domingo 25/octubre/2026.
   - Validación estricta y obligatoriedad en todos los campos del formulario de inscripción, incluyendo verificación de 10 dígitos telefónicos.
   - Remoción del pie de página con información institucional en la página de inicio pública.
