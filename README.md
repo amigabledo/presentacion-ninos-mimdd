@@ -38,6 +38,7 @@ Plataforma oficial para la inscripción pública y gestión administrativa de la
 
 ## 2. Historial de cambios
 - **03/10/2026**:
+  - Actualización del nombre en toda la plataforma a "Ministerio Internacional Monte de Dios" (incluyendo inicio de sesión de gestión y cabecera del panel).
   - Configuración de clave de acceso específica `kamos123` para la administradora `kramos`.
   - Botón de exportar CSV actualizado con icono de flecha hacia arriba.
   - Diseño responsivo dual en el panel de gestión: tarjetas limpias sin desbordes en dispositivos móviles y tabla estructurada en tablets y computadoras.

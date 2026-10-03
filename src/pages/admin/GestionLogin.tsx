@@ -42,8 +42,8 @@ export const GestionLogin: React.FC = () => {
             <div className="w-16 h-16 mb-3 rounded-2xl bg-white border border-slate-100 flex items-center justify-center shadow-xs p-1">
               <img src="/logo.png" alt="Logo Monte de Dios" className="w-full h-full object-contain" />
             </div>
-            <h1 className="text-lg font-bold text-slate-900 tracking-tight text-center">
-              Monte de Dios
+            <h1 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight text-center leading-snug">
+              Ministerio Internacional Monte de Dios
             </h1>
             <p className="text-xs text-slate-500 mt-0.5">Gestión de presentaciones</p>
           </div>

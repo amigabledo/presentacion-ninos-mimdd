@@ -117,7 +117,7 @@ export const GestionPanel: React.FC = () => {
             </div>
             <div>
               <span className="text-sm font-bold text-slate-900 block leading-tight">
-                Monte de Dios
+                Ministerio Internacional Monte de Dios
               </span>
               <span className="text-xs text-slate-500 block leading-tight">
                 Gestión de presentación de niños
