@@ -42,11 +42,13 @@ export const Home: React.FC = () => {
 
       {/* Contenido principal del formulario */}
       <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-8 sm:py-12 relative z-10">
-        <div className="text-center mb-8 space-y-2">
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-            <span className="text-[#a855f7]">Presentación </span>
-            <span className="text-[#3b82f6]">de niños</span>
-          </h1>
+        <div className="text-center mb-8 space-y-4">
+          <div>
+            <h1 className="inline-block px-7 sm:px-9 py-2.5 sm:py-3.5 rounded-full bg-white border border-sky-200/90 text-2xl sm:text-3xl font-black tracking-tight shadow-md shadow-purple-900/10">
+              <span className="text-[#a855f7]">Presentación </span>
+              <span className="text-[#3b82f6]">de niños</span>
+            </h1>
+          </div>
           <p className="text-slate-600 text-sm max-w-md mx-auto leading-relaxed">
             Complete los datos para la
             <br />

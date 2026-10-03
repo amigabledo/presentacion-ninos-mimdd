@@ -38,6 +38,7 @@ Plataforma oficial para la inscripción pública y gestión administrativa de la
 
 ## 2. Historial de cambios
 - **03/10/2026**:
+  - Diseño del título principal "Presentación de niños" en pastilla blanca redondeada destacada con elevación y sombra.
   - Centrado del logotipo institucional y el nombre "Ministerio Internacional Monte de Dios" en la barra superior.
   - Inversión de colores en el título principal: "Presentación" en rosa y "de niños" en azul.
   - Remoción de los textos informativos superiores del formulario ("Inscripción" y "Todos los campos son obligatorios").
