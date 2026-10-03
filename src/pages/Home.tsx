@@ -2,18 +2,23 @@ import React, { useState } from 'react';
 import { FormularioPresentacion } from '@/components/form/FormularioPresentacion';
 import { PresentacionExitosa } from '@/components/form/PresentacionExitosa';
 import type { PresentacionFormData } from '@/types';
-import { Sparkles } from 'lucide-react';
 
 export const Home: React.FC = () => {
   const [registroExitosoData, setRegistroExitosoData] = useState<PresentacionFormData | null>(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/30 to-slate-100 flex flex-col">
-      {/* Barra superior institucional limpia sin botones administrativos */}
-      <header className="bg-white border-b border-slate-200/80 sticky top-0 z-30 shadow-xs">
+    <div className="min-h-screen bg-gradient-to-br from-[#edf4fe] via-[#f7f2fe] to-[#eff6fe] flex flex-col relative overflow-hidden">
+      {/* Elementos decorativos de fondo estilo flyer en nubes pastel */}
+      <div className="absolute -top-16 -right-16 w-80 h-80 bg-purple-200/50 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 -left-20 w-72 h-72 bg-sky-200/50 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-16 -left-16 w-96 h-96 bg-fuchsia-200/40 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 right-0 w-72 h-72 bg-blue-200/40 rounded-full blur-3xl pointer-events-none" />
+
+      {/* Barra superior institucional */}
+      <header className="bg-white/85 backdrop-blur-md border-b border-sky-100/80 sticky top-0 z-30 shadow-xs">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl overflow-hidden bg-white border border-slate-200/80 flex items-center justify-center p-1 shadow-xs">
+            <div className="w-10 h-10 rounded-xl overflow-hidden bg-white border border-sky-100 flex items-center justify-center p-1 shadow-xs">
               <picture>
                 <source srcSet="/logo.webp" type="image/webp" />
                 <img
@@ -36,10 +41,11 @@ export const Home: React.FC = () => {
       </header>
 
       {/* Contenido principal del formulario */}
-      <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-8 sm:py-12">
+      <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-8 sm:py-12 relative z-10">
         <div className="text-center mb-8 space-y-2">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            Presentación de niños
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+            <span className="text-[#3b82f6]">Presentación </span>
+            <span className="text-[#a855f7]">de niños</span>
           </h1>
           <p className="text-slate-600 text-sm max-w-md mx-auto leading-relaxed">
             Complete los datos para la
@@ -48,8 +54,8 @@ export const Home: React.FC = () => {
           </p>
         </div>
 
-        {/* Tarjeta del formulario */}
-        <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/80 p-6 sm:p-8">
+        {/* Tarjeta del formulario con marco redondeado estilo flyer */}
+        <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-xl shadow-purple-900/5 border-2 border-sky-200/80 p-6 sm:p-8">
           {registroExitosoData ? (
             <PresentacionExitosa
               data={registroExitosoData}
@@ -62,7 +68,7 @@ export const Home: React.FC = () => {
       </main>
 
       {/* Pie de página institucional */}
-      <footer className="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500 space-y-1">
+      <footer className="border-t border-sky-100/80 bg-white/70 backdrop-blur-sm py-6 text-center text-xs text-slate-500 space-y-1 relative z-10">
         <p>Presentación de niños</p>
         <p>Ministerio Internacional Monte de Dios</p>
       </footer>

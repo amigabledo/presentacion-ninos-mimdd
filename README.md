@@ -37,6 +37,13 @@ Plataforma oficial para la inscripción pública y gestión administrativa de la
 ---
 
 ## 2. Historial de cambios
+- **03/10/2026**:
+  - Aplicación de la paleta cromática del volante oficial (celeste suave y lila pastel).
+  - Fondo ambiental con formas pastel difuminadas estilo nubes y marco redondeado con borde celeste.
+  - Ajuste del encabezado institucional a "Ministerio Internacional Monte de Dios" y subtítulo a dos líneas.
+  - Bloques de datos del padre (celeste) y de la madre (lila) diferenciados visualmente.
+  - Botón de envío con degradado institucional celeste-lila y texto "Enviar registro".
+  - Pantalla de éxito en 3 líneas con resumen de datos del niño y padres.
 - **02/10/2026**: Se actualizó el usuario administrador `cicatrices` por `kramos` para unificar los accesos institucionales con la cuenta de Diác. Katherine Ramos.
 
 ---

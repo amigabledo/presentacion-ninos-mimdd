@@ -89,7 +89,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
       {/* Datos del niño o niña */}
       <div className="space-y-4">
         <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
-          <Baby className="w-4 h-4 text-blue-600" />
+          <Baby className="w-4 h-4 text-[#a855f7]" />
           <h2 className="text-sm font-bold text-slate-800">
             Datos del niño o niña
           </h2>
@@ -108,7 +108,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
               value={formData.nombre_nino}
               onChange={(e) => setFormData((prev) => ({ ...prev, nombre_nino: e.target.value }))}
               placeholder="Nombre completo del niño o niña"
-              className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all placeholder:text-slate-400"
+              className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b82f6]/30 focus:border-[#3b82f6] transition-all placeholder:text-slate-400"
             />
           </div>
         </div>
@@ -127,7 +127,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
                 max={new Date().toISOString().split('T')[0]}
                 value={formData.fecha_nacimiento}
                 onChange={handleFechaChange}
-                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
+                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b82f6]/30 focus:border-[#3b82f6] transition-all"
               />
             </div>
           </div>
@@ -151,15 +151,15 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
       {/* Datos de los padres */}
       <div className="space-y-4 pt-2">
         <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
-          <User className="w-4 h-4 text-blue-600" />
+          <User className="w-4 h-4 text-[#3b82f6]" />
           <h2 className="text-sm font-bold text-slate-800">
             Datos de los padres
           </h2>
         </div>
 
         {/* Datos del padre */}
-        <div className="p-4 rounded-xl bg-slate-50/70 border border-slate-200/80 space-y-3">
-          <span className="text-xs font-bold text-slate-800 block">
+        <div className="p-4 rounded-2xl bg-sky-50/60 border border-sky-100 space-y-3">
+          <span className="text-xs font-bold text-sky-950 block">
             Datos del padre
           </span>
           <div>
@@ -173,7 +173,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
               value={formData.nombre_padre}
               onChange={(e) => setFormData((prev) => ({ ...prev, nombre_padre: e.target.value }))}
               placeholder="Nombre y apellidos del padre"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all placeholder:text-slate-400"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-sky-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition-all placeholder:text-slate-400"
             />
           </div>
 
@@ -190,15 +190,15 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
                 value={formData.telefono_padre}
                 onChange={handleTelefonoPadreChange}
                 placeholder="(809) 000-0000"
-                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all placeholder:text-slate-400"
+                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-white border border-sky-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition-all placeholder:text-slate-400"
               />
             </div>
           </div>
         </div>
 
         {/* Datos de la madre */}
-        <div className="p-4 rounded-xl bg-slate-50/70 border border-slate-200/80 space-y-3">
-          <span className="text-xs font-bold text-slate-800 block">
+        <div className="p-4 rounded-2xl bg-purple-50/60 border border-purple-100 space-y-3">
+          <span className="text-xs font-bold text-purple-950 block">
             Datos de la madre
           </span>
           <div>
@@ -212,7 +212,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
               value={formData.nombre_madre}
               onChange={(e) => setFormData((prev) => ({ ...prev, nombre_madre: e.target.value }))}
               placeholder="Nombre y apellidos de la madre"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all placeholder:text-slate-400"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-purple-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500 transition-all placeholder:text-slate-400"
             />
           </div>
 
@@ -229,7 +229,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
                 value={formData.telefono_madre}
                 onChange={handleTelefonoMadreChange}
                 placeholder="(809) 000-0000"
-                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all placeholder:text-slate-400"
+                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-white border border-purple-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500 transition-all placeholder:text-slate-400"
               />
             </div>
           </div>
@@ -240,7 +240,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-3.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-sm shadow-md shadow-blue-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#3b82f6] to-[#a855f7] hover:from-[#2563eb] hover:to-[#9333ea] text-white font-semibold text-sm shadow-md shadow-purple-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {isSubmitting ? (
             <>
