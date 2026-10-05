@@ -113,7 +113,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
             Nombre del niño o niña <span className="text-red-500">*</span>
           </label>
           <div className="relative">
-            <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               id="nombre_nino"
               type="text"
@@ -121,18 +121,18 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
               value={formData.nombre_nino}
               onChange={(e) => setFormData((prev) => ({ ...prev, nombre_nino: e.target.value }))}
               placeholder="Nombre completo del niño o niña"
-              className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b82f6]/30 focus:border-[#3b82f6] transition-all placeholder:text-slate-400"
+              className="w-full pl-10 pr-3.5 h-11 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b82f6]/30 focus:border-[#3b82f6] transition-all placeholder:text-slate-400"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
+          <div className="min-w-0">
             <label htmlFor="fecha_nacimiento" className="block text-xs font-semibold text-slate-700 mb-1">
               Fecha de nacimiento <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <Calendar className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Calendar className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 id="fecha_nacimiento"
                 type="date"
@@ -140,13 +140,13 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
                 max={new Date().toISOString().split('T')[0]}
                 value={formData.fecha_nacimiento}
                 onChange={handleFechaChange}
-                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b82f6]/30 focus:border-[#3b82f6] transition-all"
+                className="w-full min-w-0 block appearance-none pl-10 pr-3.5 h-11 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b82f6]/30 focus:border-[#3b82f6] transition-all"
               />
             </div>
           </div>
 
-          <div>
-            <label htmlFor="edad_nino" className="block text-xs font-semibold text-slate-700 mb-1">
+          <div className="min-w-0">
+            <label htmlFor="edad_nino" className="block text-xs font-semibold text-slate-700 mb-1 truncate">
               Edad del niño o niña <span className="text-red-500">*</span>
             </label>
             <input
@@ -155,8 +155,8 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
               required
               value={formData.edad_nino}
               onChange={(e) => setFormData((prev) => ({ ...prev, edad_nino: e.target.value }))}
-              placeholder="Se calcula al seleccionar fecha"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b82f6]/30 focus:border-[#3b82f6] transition-all placeholder:text-slate-400 font-medium"
+              placeholder="Calculada al seleccionar fecha"
+              className="w-full min-w-0 block h-11 px-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b82f6]/30 focus:border-[#3b82f6] transition-all placeholder:text-slate-400 font-medium"
             />
           </div>
         </div>
@@ -187,7 +187,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
               value={formData.nombre_padre}
               onChange={(e) => setFormData((prev) => ({ ...prev, nombre_padre: e.target.value }))}
               placeholder="Nombre y apellidos del padre"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-sky-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition-all placeholder:text-slate-400"
+              className="w-full h-11 px-3.5 rounded-xl bg-white border border-sky-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition-all placeholder:text-slate-400"
             />
           </div>
 
@@ -196,7 +196,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
               Teléfono del padre <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 id="telefono_padre"
                 type="tel"
@@ -206,7 +206,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
                 value={formData.telefono_padre}
                 onChange={handleTelefonoPadreChange}
                 placeholder="(809) 000-0000"
-                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-white border border-sky-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition-all placeholder:text-slate-400"
+                className="w-full h-11 pl-10 pr-3.5 rounded-xl bg-white border border-sky-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition-all placeholder:text-slate-400"
               />
             </div>
           </div>
@@ -228,7 +228,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
               value={formData.nombre_madre}
               onChange={(e) => setFormData((prev) => ({ ...prev, nombre_madre: e.target.value }))}
               placeholder="Nombre y apellidos de la madre"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-purple-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500 transition-all placeholder:text-slate-400"
+              className="w-full h-11 px-3.5 rounded-xl bg-white border border-purple-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500 transition-all placeholder:text-slate-400"
             />
           </div>
 
@@ -237,7 +237,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
               Teléfono de la madre <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 id="telefono_madre"
                 type="tel"
@@ -247,7 +247,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
                 value={formData.telefono_madre}
                 onChange={handleTelefonoMadreChange}
                 placeholder="(809) 000-0000"
-                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-white border border-purple-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500 transition-all placeholder:text-slate-400"
+                className="w-full h-11 pl-10 pr-3.5 rounded-xl bg-white border border-purple-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500 transition-all placeholder:text-slate-400"
               />
             </div>
           </div>

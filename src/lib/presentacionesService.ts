@@ -24,6 +24,18 @@ export async function crearPresentacion(data: PresentacionFormData): Promise<{ s
       return { success: true, error: null };
     }
 
+    try {
+      const endpoint = window.location.hostname.includes('pages.dev')
+        ? '/api/presentacion'
+        : 'https://registro-nuevos-servidores.pages.dev/api/presentacion';
+
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      }).catch((e) => console.warn('Aviso de envío a Google Sheets:', e));
+    } catch (ignore) {}
+
     return { success: true, error: null };
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Error inesperado';

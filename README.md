@@ -37,6 +37,12 @@ Plataforma oficial para la inscripción pública y gestión administrativa de la
 ---
 
 ## 2. Historial de cambios
+- **05/10/2026**:
+  - Corrección visual en iPad / iPadOS Safari para el campo "Fecha de nacimiento" y "Edad del niño o niña".
+  - Se agregaron reglas de normalización en CSS para `input[type="date"]` (`-webkit-appearance: none`, `min-width: 0`, `max-width: 100%`) y `::-webkit-date-and-time-value`.
+  - Se aplicó `min-w-0` a las columnas del grid y altura uniforme `h-11` (44 px estándar de accesibilidad táctil) en los campos de entrada, evitando desbordamientos y solapamientos en pantallas de tablet.
+  - Se añadió `pointer-events-none` a los iconos de los campos para asegurar enfoque directo y activación del selector nativo al tocar.
+  - Confirmación de acceso al panel de gestión para `kramos` con contraseña `kramos123` (y alternativa `kamos123`).
 - **03/10/2026**:
   - Diseño del título principal "Presentación de niños" en pastilla blanca redondeada destacada con elevación y sombra.
   - Centrado del logotipo institucional y el nombre "Ministerio Internacional Monte de Dios" en la barra superior.
