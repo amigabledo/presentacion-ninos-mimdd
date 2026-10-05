@@ -30,6 +30,8 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
       fecha_nacimiento: fecha,
       edad_nino: edadCalculada || prev.edad_nino,
     }));
+    // Desenfocar el campo tras seleccionar para retirar el aro azul de foco en iPad/iOS
+    e.target.blur();
   };
 
   const handleTelefonoPadreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,7 +142,7 @@ export const FormularioPresentacion: React.FC<FormularioProps> = ({ onSuccess })
                 max={new Date().toISOString().split('T')[0]}
                 value={formData.fecha_nacimiento}
                 onChange={handleFechaChange}
-                className="w-full min-w-0 block appearance-none pl-10 pr-3.5 h-11 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#3b82f6]/30 focus:border-[#3b82f6] transition-all"
+                className="w-full min-w-0 block appearance-none pl-11 pr-3.5 h-11 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#3b82f6]/30 focus:border-[#3b82f6] transition-all"
               />
             </div>
           </div>

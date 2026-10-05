@@ -42,6 +42,8 @@ Plataforma oficial para la inscripción pública y gestión administrativa de la
   - Se agregaron reglas de normalización en CSS para `input[type="date"]` (`-webkit-appearance: none`, `min-width: 0`, `max-width: 100%`) y `::-webkit-date-and-time-value`.
   - Se aplicó `min-w-0` a las columnas del grid y altura uniforme `h-11` (44 px estándar de accesibilidad táctil) en los campos de entrada, evitando desbordamientos y solapamientos en pantallas de tablet.
   - Se añadió `pointer-events-none` a los iconos de los campos para asegurar enfoque directo y activación del selector nativo al tocar.
+  - Auto-desenfoque (`blur`) automático en el selector de fecha al elegir día para que no permanezca el borde azul activo en iPad/iOS.
+  - Ajuste de espaciado interno a `pl-11` para dar mayor separación visual entre el icono del calendario y el texto de la fecha elegida.
   - Confirmación de acceso al panel de gestión para `kramos` con contraseña `kramos123` (y alternativa `kamos123`).
 - **03/10/2026**:
   - Diseño del título principal "Presentación de niños" en pastilla blanca redondeada destacada con elevación y sombra.
