@@ -2,16 +2,18 @@
  * Google Apps Script - Integración de Presentación de Niños
  * Ministerio Internacional Monte de Dios
  * 
- * Configuración:
- * 1. Abre tu hoja de cálculo en Google Sheets.
- * 2. Ve a Extensiones > Apps Script.
- * 3. Pega este código completo en Code.gs.
- * 4. Guarda y ejecuta una vez 'limpiarYFormatearHoja' para estructurar la hoja.
- * 5. Haz clic en 'Implementar' > 'Administrar implementaciones' > Editar > Versión: Nueva versión > Implementar.
+ * Instrucciones:
+ * 1. Abre tu hoja de Google Sheets: "Presentación de niños (Octubre, 2026)".
+ * 2. Ve al menú superior "Extensiones" > "Apps Script".
+ * 3. Reemplaza todo el contenido en Code.gs con este código completo.
+ * 4. Haz clic en "Guardar" (icono de disquete).
+ * 5. En el menú superior de funciones selecciona 'sincronizarDesdeSupabase' y haz clic en "Ejecutar"
+ *    (acepta los permisos de Google si es la primera vez).
+ *    -> Esto reparará de inmediato todas las filas corridas y vacías directamente desde la base de datos oficial.
+ * 6. Luego ve a "Implementar" > "Administrar implementaciones" > Editar > Versión: "Nueva versión" > Implementar.
  */
 
 var HOJA_NOMBRE = 'Presentaciones';
-var COLOR_ENCABEZADO = '#0284C7'; // Azul zafiro institucional
 var ZONA_HORARIA = 'America/Santo_Domingo';
 
 var TITULO_LINEA_1 = 'MINISTERIO INTERNACIONAL MONTE DE DIOS';
@@ -19,8 +21,11 @@ var TITULO_LINEA_2 = 'Presentación de niños';
 var TITULO_LINEA_3 = 'OCTUBRE, 2026';
 var FILA_ENCABEZADOS = 4;
 
+var SUPABASE_URL = 'https://fnwtfjwysitrpnpjsuoy.supabase.co';
+var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZud3Rmand5c2l0cnBucGpzdW95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4NTY3MDMsImV4cCI6MjA5ODQzMjcwM30.dMPBJZOmAuYwmsYUZPebNtLQYn74_XAu1Hs-YwrA-AQ';
+
 var COLUMNAS = [
-  { clave: 'marca_temporal', titulo: 'Marca temporal', ancho: 180, alinear: 'center' },
+  { clave: 'marca_temporal', titulo: 'Marca temporal', ancho: 175, alinear: 'center' },
   { clave: 'nombre_nino', titulo: 'Nombre del niño o niña', ancho: 260, alinear: 'left' },
   { clave: 'fecha_nacimiento', titulo: 'Fecha de nacimiento', ancho: 160, alinear: 'center' },
   { clave: 'edad_nino', titulo: 'Edad del niño', ancho: 150, alinear: 'center' },
@@ -28,16 +33,16 @@ var COLUMNAS = [
   { clave: 'telefono_padre', titulo: 'Teléfono del padre', ancho: 175, alinear: 'center' },
   { clave: 'nombre_madre', titulo: 'Nombre de la madre', ancho: 230, alinear: 'left' },
   { clave: 'telefono_madre', titulo: 'Teléfono de la madre', ancho: 175, alinear: 'center' },
-  { clave: 'estado', titulo: 'Estado de presentación', ancho: 165, alinear: 'center' },
   { clave: 'notas', titulo: 'Notas y observaciones', ancho: 320, alinear: 'left' }
 ];
 
 function onOpen() {
   var ui = SpreadsheetApp.getUi();
   ui.createMenu('Monte de Dios')
-    .addItem('Inicializar y formatear encabezados', 'limpiarYFormatearHoja')
-    .addItem('Corregir columnas desalineadas', 'corregirFilasDesalineadas')
-    .addItem('Comprobar estado del webhook', 'verificarEstado')
+    .addItem('1. Sincronizar y reparar todas las filas desde Supabase', 'sincronizarDesdeSupabase')
+    .addItem('2. Formatear encabezados y membrete', 'limpiarYFormatearHoja')
+    .addItem('3. Corregir filas corridas en hoja actual', 'corregirFilasDesalineadas')
+    .addItem('4. Comprobar estado del webhook', 'verificarEstado')
     .addToUi();
 }
 
@@ -46,7 +51,7 @@ function limpiarYFormatearHoja() {
   var sheet = ss.getSheetByName(HOJA_NOMBRE) || ss.getActiveSheet();
   sheet.setName(HOJA_NOMBRE);
   asegurarEncabezadosYFormato(sheet);
-  return 'Hoja de presentación de niños formateada con éxito';
+  SpreadsheetApp.getUi().alert('Diseño y encabezados de presentación de niños aplicados con éxito.');
 }
 
 function asegurarEncabezadosYFormato(sheet) {
@@ -66,7 +71,7 @@ function asegurarEncabezadosYFormato(sheet) {
     }
   }
 
-  // Fila 1: MINISTERIO INTERNACIONAL MONTE DE DIOS
+  // Fila 1: Membrete institucional
   var rangoFila1 = sheet.getRange(1, 1, 1, totalCols);
   rangoFila1.merge()
     .setValue(TITULO_LINEA_1)
@@ -79,7 +84,7 @@ function asegurarEncabezadosYFormato(sheet) {
     .setVerticalAlignment('middle');
   sheet.setRowHeight(1, 40);
 
-  // Fila 2: Presentación de niños
+  // Fila 2: Subtítulo
   var rangoFila2 = sheet.getRange(2, 1, 1, totalCols);
   rangoFila2.merge()
     .setValue(TITULO_LINEA_2)
@@ -92,7 +97,7 @@ function asegurarEncabezadosYFormato(sheet) {
     .setVerticalAlignment('middle');
   sheet.setRowHeight(2, 36);
 
-  // Fila 3: OCTUBRE, 2026
+  // Fila 3: Período
   var rangoFila3 = sheet.getRange(3, 1, 1, totalCols);
   rangoFila3.merge()
     .setValue(TITULO_LINEA_3)
@@ -132,40 +137,86 @@ function asegurarEncabezadosYFormato(sheet) {
 
   var filasTotales = sheet.getLastRow();
   if (filasTotales >= FILA_ENCABEZADOS + 1) {
-    // Corregir automáticamente filas desalineadas (donde el estado cayó en Notas)
-    for (var f = FILA_ENCABEZADOS + 1; f <= filasTotales; f++) {
-      var valI = sheet.getRange(f, 9).getValue().toString().trim();
-      var valJ = sheet.getRange(f, 10).getValue().toString().trim();
-      var esEstado = (valJ === 'Pendiente' || valJ === 'Confirmado' || valJ === 'Presentado' || valJ === 'Cancelado');
-      if (!valI && esEstado) {
-        sheet.getRange(f, 9).setValue(valJ);
-        sheet.getRange(f, 10).setValue('');
-      }
-    }
-
     aplicarFormatoFilas(sheet, FILA_ENCABEZADOS + 1, filasTotales - FILA_ENCABEZADOS);
   }
 }
 
+/**
+ * Descarga y reconstruye de forma 100% limpia todos los niños inscritos desde Supabase.
+ * Corrige filas corridas, huecos en blanco y columnas desfasadas.
+ */
+function sincronizarDesdeSupabase() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(HOJA_NOMBRE) || ss.getActiveSheet();
+  sheet.setName(HOJA_NOMBRE);
+
+  asegurarEncabezadosYFormato(sheet);
+
+  var url = SUPABASE_URL + '/rest/v1/presentaciones_ninos?select=*&order=created_at.asc';
+  var options = {
+    method: 'get',
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+    },
+    muteHttpExceptions: true
+  };
+
+  var response = UrlFetchApp.fetch(url, options);
+  if (response.getResponseCode() !== 200) {
+    throw new Error('Error al conectar con la base de datos: ' + response.getContentText());
+  }
+
+  var registros = JSON.parse(response.getContentText());
+  if (!Array.isArray(registros) || registros.length === 0) {
+    SpreadsheetApp.getUi().alert('No se encontraron registros en la base de datos.');
+    return;
+  }
+
+  // Limpiar datos existentes a partir de la fila 5
+  var totalFilasActuales = sheet.getLastRow();
+  if (totalFilasActuales > FILA_ENCABEZADOS) {
+    sheet.getRange(FILA_ENCABEZADOS + 1, 1, totalFilasActuales - FILA_ENCABEZADOS, COLUMNAS.length).clearContent();
+  }
+
+  var filas = [];
+  for (var i = 0; i < registros.length; i++) {
+    filas.push(mapearRegistroAFila(registros[i]));
+  }
+
+  sheet.getRange(FILA_ENCABEZADOS + 1, 1, filas.length, COLUMNAS.length).setValues(filas);
+  aplicarFormatoFilas(sheet, FILA_ENCABEZADOS + 1, filas.length);
+
+  SpreadsheetApp.getUi().alert('Se sincronizaron y repararon exitosamente ' + filas.length + ' registros en la hoja.');
+}
+
+/**
+ * Auto-corrección de filas corridas en la hoja actual
+ * Detecta cuando la columna B está vacía y los datos cayeron a partir de la columna C
+ */
 function corregirFilasDesalineadas() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheetByName(HOJA_NOMBRE) || ss.getActiveSheet();
-  var ultimaFila = sheet.getLastRow();
-  var filasCorregidas = 0;
-  var filaInicio = (sheet.getRange(1, 1).getValue().toString().trim() === TITULO_LINEA_1) ? (FILA_ENCABEZADOS + 1) : 2;
+  var totalFilas = sheet.getLastRow();
+  var corregidas = 0;
 
-  for (var f = filaInicio; f <= ultimaFila; f++) {
-    var valI = sheet.getRange(f, 9).getValue().toString().trim();
-    var valJ = sheet.getRange(f, 10).getValue().toString().trim();
-    var esEstado = (valJ === 'Pendiente' || valJ === 'Confirmado' || valJ === 'Presentado' || valJ === 'Cancelado');
-    if (!valI && esEstado) {
-      sheet.getRange(f, 9).setValue(valJ);
-      sheet.getRange(f, 10).setValue('');
-      filasCorregidas++;
+  for (var f = FILA_ENCABEZADOS + 1; f <= totalFilas; f++) {
+    var colB = sheet.getRange(f, 2).getValue().toString().trim(); // Nombre niño
+    var colC = sheet.getRange(f, 3).getValue().toString().trim();
+
+    // Si la columna B está vacía pero la columna C tiene datos (fila corrida hacia la derecha)
+    if (!colB && colC) {
+      // Tomar los valores de C hasta la última columna y desplazarlos una posición a la izquierda
+      var numCols = COLUMNAS.length - 1;
+      var valores = sheet.getRange(f, 3, 1, numCols).getValues()[0];
+      
+      sheet.getRange(f, 2, 1, numCols).setValues([valores]);
+      sheet.getRange(f, COLUMNAS.length).setValue('');
+      corregidas++;
     }
   }
 
-  SpreadsheetApp.getUi().alert('Proceso completado: se corrigieron ' + filasCorregidas + ' fila(s) desalineadas.');
+  SpreadsheetApp.getUi().alert('Se corrigieron ' + corregidas + ' fila(s) que estaban corridas.');
 }
 
 function doPost(e) {
@@ -175,7 +226,7 @@ function doPost(e) {
   } catch (err) {
     return ContentService.createTextOutput(JSON.stringify({
       success: false,
-      error: 'El servicio se encuentra ocupado. Intente nuevamente en unos segundos.'
+      error: 'El servicio se encuentra ocupado.'
     })).setMimeType(ContentService.MimeType.JSON);
   }
 
@@ -188,7 +239,7 @@ function doPost(e) {
 
     var contenido = JSON.parse(e.postData.contents);
 
-    // Caso 1: Sincronización por lote (batch histórico)
+    // Caso 1: Sincronización en lote
     if (contenido.action === 'sync_batch' && Array.isArray(contenido.records)) {
       var filasLote = [];
       for (var k = 0; k < contenido.records.length; k++) {
@@ -197,15 +248,13 @@ function doPost(e) {
 
       if (filasLote.length > 0) {
         var ultimaFila = Math.max(sheet.getLastRow(), FILA_ENCABEZADOS);
-        var numCols = COLUMNAS.length;
-        sheet.getRange(ultimaFila + 1, 1, filasLote.length, numCols).setValues(filasLote);
+        sheet.getRange(ultimaFila + 1, 1, filasLote.length, COLUMNAS.length).setValues(filasLote);
         aplicarFormatoFilas(sheet, ultimaFila + 1, filasLote.length);
       }
 
       return ContentService.createTextOutput(JSON.stringify({
         success: true,
-        registros_insertados: filasLote.length,
-        mensaje: 'Lote histórico de presentación de niños insertado correctamente'
+        registros_insertados: filasLote.length
       })).setMimeType(ContentService.MimeType.JSON);
     }
 
@@ -219,8 +268,7 @@ function doPost(e) {
 
     return ContentService.createTextOutput(JSON.stringify({
       success: true,
-      fila: filaInsertada,
-      mensaje: 'Registro de niño guardado satisfactoriamente en Google Sheets'
+      fila: filaInsertada
     })).setMimeType(ContentService.MimeType.JSON);
 
   } catch (err) {
@@ -256,12 +304,6 @@ function mapearRegistroAFila(r) {
   var telPadre = telPadreRaw ? "'" + telPadreRaw : '';
   var telMadre = telMadreRaw ? "'" + telMadreRaw : '';
 
-  var estado = r.estado || 'Pendiente';
-  if (estado === 'pendiente') estado = 'Pendiente';
-  else if (estado === 'confirmado') estado = 'Confirmado';
-  else if (estado === 'presentado') estado = 'Presentado';
-  else if (estado === 'cancelado') estado = 'Cancelado';
-
   return [
     marcaTemporal,
     (r.nombre_nino || '').toString().trim(),
@@ -271,7 +313,6 @@ function mapearRegistroAFila(r) {
     telPadre,
     (r.nombre_madre || '').toString().trim(),
     telMadre,
-    estado,
     (r.notas || '').toString().trim()
   ];
 }

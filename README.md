@@ -37,6 +37,11 @@ Plataforma oficial para la inscripción pública y gestión administrativa de la
 ---
 
 ## 2. Historial de cambios
+- **06/10/2026**:
+  - Reemplazo de la exportación CSV por botones dedicados para exportación a Excel (.xlsx) y reporte PDF (.pdf).
+  - Eliminación completa del concepto y columna de estados del panel administrativo y de la tabla de registros.
+  - Actualización de las tarjetas de métricas para mostrar estadísticas familiares útiles: total de niños inscritos, familias con ambos padres y bebés lactantes.
+  - Actualización de Google Apps Script (`scripts/sheets-presentacion-ninos.js`) integrando la función `sincronizarDesdeSupabase` y auto-corrección de filas corridas para reparar el desfase en Google Sheets en un solo clic.
 - **05/10/2026**:
   - Corrección visual en iPad / iPadOS Safari para el campo "Fecha de nacimiento" y "Edad del niño o niña".
   - Se agregaron reglas de normalización en CSS para `input[type="date"]` (`-webkit-appearance: none`, `min-width: 0`, `max-width: 100%`) y `::-webkit-date-and-time-value`.

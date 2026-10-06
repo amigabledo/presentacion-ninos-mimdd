@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchPresentaciones, actualizarEstadoPresentacion } from '@/lib/presentacionesService';
-import type { PresentacionNino, EstadoPresentacion } from '@/types';
+import { fetchPresentaciones } from '@/lib/presentacionesService';
+import type { PresentacionNino } from '@/types';
 import { MetricasPanel } from './MetricasPanel';
 import { TablaRegistros } from './TablaRegistros';
-import { Search, Upload, RefreshCw, LogOut, User } from 'lucide-react';
+import { Search, RefreshCw, LogOut, User, FileSpreadsheet, FileText } from 'lucide-react';
+import { exportarExcel, exportarPDF } from '@/lib/exportUtils';
 
 export const GestionPanel: React.FC = () => {
   const [registros, setRegistros] = useState<PresentacionNino[]>([]);
   const [filtroTexto, setFiltroTexto] = useState('');
-  const [filtroEstado, setFiltroEstado] = useState<string>('todos');
   const [cargando, setCargando] = useState(true);
   const [usuarioActual, setUsuarioActual] = useState('Administrador');
   const navigate = useNavigate();
@@ -47,65 +47,16 @@ export const GestionPanel: React.FC = () => {
     navigate('/gestion/login');
   };
 
-  const handleCambiarEstado = async (id: string, nuevoEstado: EstadoPresentacion) => {
-    await actualizarEstadoPresentacion(id, nuevoEstado);
-    setRegistros((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, estado: nuevoEstado } : r))
-    );
-  };
-
-  const exportarCSV = () => {
-    if (registros.length === 0) return;
-    const encabezados = [
-      'Niño o niña',
-      'Fecha nacimiento',
-      'Edad',
-      'Padre',
-      'Teléfono padre',
-      'Madre',
-      'Teléfono madre',
-      'Estado',
-      'Fecha registro',
-    ];
-
-    const filas = registros.map((r) => [
-      `"${r.nombre_nino.replace(/"/g, '""')}"`,
-      r.fecha_nacimiento,
-      `"${r.edad_nino}"`,
-      `"${r.nombre_padre.replace(/"/g, '""')}"`,
-      r.telefono_padre,
-      `"${r.nombre_madre.replace(/"/g, '""')}"`,
-      r.telefono_madre,
-      r.estado,
-      new Date(r.created_at).toLocaleDateString(),
-    ]);
-
-    const csvContent =
-      '\uFEFF' + [encabezados.join(','), ...filas.map((f) => f.join(','))].join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `presentaciones_ninos_${new Date().toISOString().split('T')[0]}.csv`;
-    link.click();
-    URL.revokeObjectURL(url);
-  };
-
   const filtrados = registros.filter((r) => {
-    const matchTexto =
-      r.nombre_nino.toLowerCase().includes(filtroTexto.toLowerCase()) ||
-      r.nombre_padre.toLowerCase().includes(filtroTexto.toLowerCase()) ||
-      r.nombre_madre.toLowerCase().includes(filtroTexto.toLowerCase()) ||
+    const texto = filtroTexto.toLowerCase();
+    return (
+      r.nombre_nino.toLowerCase().includes(texto) ||
+      r.nombre_padre.toLowerCase().includes(texto) ||
+      r.nombre_madre.toLowerCase().includes(texto) ||
       r.telefono_padre.includes(filtroTexto) ||
-      r.telefono_madre.includes(filtroTexto);
-    const matchEstado = filtroEstado === 'todos' || r.estado === filtroEstado;
-    return matchTexto && matchEstado;
+      r.telefono_madre.includes(filtroTexto)
+    );
   });
-
-  const total = registros.length;
-  const pendientes = registros.filter((r) => r.estado === 'pendiente').length;
-  const confirmados = registros.filter((r) => r.estado === 'confirmado').length;
-  const presentados = registros.filter((r) => r.estado === 'presentado').length;
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
@@ -132,13 +83,23 @@ export const GestionPanel: React.FC = () => {
             </div>
 
             <button
-              onClick={exportarCSV}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-xs transition-colors"
-              title="Exportar archivo CSV con flecha hacia arriba"
+              onClick={() => exportarExcel(filtrados)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-emerald-200 bg-emerald-50 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 shadow-xs transition-colors"
+              title="Exportar archivo de Excel"
             >
-              <Upload className="w-3.5 h-3.5 text-blue-600" />
-              <span>Exportar</span>
+              <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Exportar Excel</span>
             </button>
+
+            <button
+              onClick={() => exportarPDF(filtrados)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-200 bg-rose-50 text-xs font-semibold text-rose-700 hover:bg-rose-100 shadow-xs transition-colors"
+              title="Exportar reporte en PDF"
+            >
+              <FileText className="w-3.5 h-3.5 text-rose-600" />
+              <span>Exportar PDF</span>
+            </button>
+
             <button
               onClick={cargarDatos}
               className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
@@ -158,15 +119,10 @@ export const GestionPanel: React.FC = () => {
       </header>
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6">
-        <MetricasPanel
-          total={total}
-          pendientes={pendientes}
-          confirmados={confirmados}
-          presentados={presentados}
-        />
+        <MetricasPanel registros={registros} />
 
         <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-xs flex flex-col sm:flex-row gap-3 items-center justify-between">
-          <div className="relative w-full sm:w-80">
+          <div className="relative w-full sm:w-96">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
@@ -177,25 +133,14 @@ export const GestionPanel: React.FC = () => {
             />
           </div>
 
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <select
-              value={filtroEstado}
-              onChange={(e) => setFiltroEstado(e.target.value)}
-              className="px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-700 focus:outline-none w-full sm:w-auto"
-            >
-              <option value="todos">Todos los estados</option>
-              <option value="pendiente">Pendientes</option>
-              <option value="confirmado">Confirmados</option>
-              <option value="presentado">Presentados</option>
-              <option value="cancelado">Cancelados</option>
-            </select>
+          <div className="text-xs text-slate-500 font-medium self-end sm:self-center">
+            Mostrando {filtrados.length} de {registros.length} inscritos
           </div>
         </div>
 
         <TablaRegistros
           cargando={cargando}
           registros={filtrados}
-          onCambiarEstado={handleCambiarEstado}
         />
       </main>
     </div>
