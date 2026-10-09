@@ -37,6 +37,11 @@ Plataforma oficial para la inscripción pública y gestión administrativa de la
 ---
 
 ## 2. Historial de cambios
+- **09/10/2026**:
+  - Remediación de seguridad integral: integración de autenticación real con Supabase Auth (`signInWithPassword`) en `GestionLogin.tsx`.
+  - Eliminación de bypass sin contraseña y claves en texto claro del frontend.
+  - Blindaje estricto de políticas RLS en `presentaciones_ninos`: revocación de permisos `SELECT` y `UPDATE` para clientes anónimos; preservación exclusiva de `INSERT` para el formulario público.
+  - Eliminación de credenciales estáticas de PostgreSQL en `scripts/create_presentaciones_table.cjs`, requiriendo variables de entorno protegidas.
 - **06/10/2026**:
   - Reemplazo de la exportación CSV por botones dedicados para exportación a Excel (.xlsx) y reporte PDF (.pdf).
   - Eliminación completa del concepto y columna de estados del panel administrativo y de la tabla de registros.
@@ -49,7 +54,6 @@ Plataforma oficial para la inscripción pública y gestión administrativa de la
   - Se añadió `pointer-events-none` a los iconos de los campos para asegurar enfoque directo y activación del selector nativo al tocar.
   - Auto-desenfoque (`blur`) automático en el selector de fecha al elegir día para que no permanezca el borde azul activo en iPad/iOS.
   - Ajuste de espaciado interno a `pl-11` para dar mayor separación visual entre el icono del calendario y el texto de la fecha elegida.
-  - Confirmación de acceso al panel de gestión para `kramos` con contraseña `kramos123` (y alternativa `kamos123`).
 - **03/10/2026**:
   - Diseño del título principal "Presentación de niños" en pastilla blanca redondeada destacada con elevación y sombra.
   - Centrado del logotipo institucional y el nombre "Ministerio Internacional Monte de Dios" en la barra superior.
@@ -59,10 +63,8 @@ Plataforma oficial para la inscripción pública y gestión administrativa de la
   - Validación estricta y obligatoriedad en todos los campos del formulario de inscripción, incluyendo verificación de 10 dígitos telefónicos.
   - Remoción del pie de página con información institucional en la página de inicio pública.
   - Actualización del nombre en toda la plataforma a "Ministerio Internacional Monte de Dios" (incluyendo inicio de sesión de gestión y cabecera del panel).
-  - Configuración de clave de acceso específica `kamos123` para la administradora `kramos`.
   - Botón de exportar CSV actualizado con icono de flecha hacia arriba.
   - Diseño responsivo dual en el panel de gestión: tarjetas limpias sin desbordes en dispositivos móviles y tabla estructurada en tablets y computadoras.
-  - Apertura de permisos RLS para lectura y actualización directa desde la consola PostgREST en Supabase.
   - Aplicación de la paleta cromática del volante oficial (celeste suave y lila pastel).
   - Fondo ambiental con formas pastel difuminadas estilo nubes y marco redondeado con borde celeste.
   - Ajuste del encabezado institucional a "Ministerio Internacional Monte de Dios" y subtítulo a dos líneas.

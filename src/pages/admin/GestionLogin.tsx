@@ -1,37 +1,53 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogIn, Lock, User, ArrowLeft } from 'lucide-react';
+import { LogIn, Lock, User, ArrowLeft, Loader2 } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 export const GestionLogin: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [cargando, setCargando] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+    setCargando(true);
+
     const u = username.trim().toLowerCase();
     const p = password.trim();
 
-    // Verificación para Katherine Ramos con la clave kamos123
-    if (u === 'kramos') {
-      if (p === 'kamos123' || p === 'kramos123') {
-        localStorage.setItem('mimdd_admin_auth', JSON.stringify({ user: 'kramos', time: Date.now() }));
-        navigate('/gestion');
-        return;
+    const candidateEmails = u.includes('@')
+      ? [u]
+      : [`${u}@amigable.do`, `${u}@merch.com`, `${u}@mimdd.org`];
+
+    let autenticado = false;
+    for (const email of candidateEmails) {
+      try {
+        const { data, error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password: p,
+        });
+
+        if (!signInError && data?.user) {
+          localStorage.setItem(
+            'mimdd_admin_auth',
+            JSON.stringify({ user: u, email, time: Date.now() })
+          );
+          autenticado = true;
+          navigate('/gestion');
+          return;
+        }
+      } catch {
+        // Continuar siguiente intento
       }
-      setError('Contraseña incorrecta');
-      return;
     }
 
-    // Acceso para otros administradores o servidores autorizados
-    if (u === 'marcos' || u === 'admin' || u === 'servidor') {
-      localStorage.setItem('mimdd_admin_auth', JSON.stringify({ user: u, time: Date.now() }));
-      navigate('/gestion');
-      return;
+    if (!autenticado) {
+      setError('Credenciales incorrectas. Verifique su usuario y contraseña.');
     }
-
-    setError('Usuario no autorizado para la gestión');
+    setCargando(false);
   };
 
   return (
@@ -91,10 +107,20 @@ export const GestionLogin: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-sm"
+              disabled={cargando}
+              className="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-sm"
             >
-              <LogIn className="w-4 h-4" />
-              <span>Acceder al panel</span>
+              {cargando ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Iniciando sesión</span>
+                </>
+              ) : (
+                <>
+                  <LogIn className="w-4 h-4" />
+                  <span>Acceder al panel</span>
+                </>
+              )}
             </button>
           </form>
 
