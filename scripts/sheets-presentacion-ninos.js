@@ -7,9 +7,10 @@
  * 2. Ve al menú superior "Extensiones" > "Apps Script".
  * 3. Reemplaza todo el contenido en Code.gs con este código completo.
  * 4. Haz clic en "Guardar" (icono de disquete).
- * 5. En el menú superior de funciones selecciona 'sincronizarDesdeSupabase' y haz clic en "Ejecutar"
+ * 5. En el menú superior de funciones selecciona 'repararFilasYEliminarEstado' y haz clic en "Ejecutar"
  *    (acepta los permisos de Google si es la primera vez).
- *    -> Esto reparará de inmediato todas las filas corridas y vacías directamente desde la base de datos oficial.
+ *    -> Esto reparará de inmediato todas las filas corridas a partir de la fila 55 y eliminará la columna de estatus.
+ *    (O si prefieres reconstruir la hoja completa directamente con los 180 registros oficiales de Supabase, ejecuta 'sincronizarDesdeSupabase').
  * 6. Luego ve a "Implementar" > "Administrar implementaciones" > Editar > Versión: "Nueva versión" > Implementar.
  */
 
@@ -24,6 +25,7 @@ var FILA_ENCABEZADOS = 4;
 var SUPABASE_URL = 'https://fnwtfjwysitrpnpjsuoy.supabase.co';
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZud3Rmand5c2l0cnBucGpzdW95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4NTY3MDMsImV4cCI6MjA5ODQzMjcwM30.dMPBJZOmAuYwmsYUZPebNtLQYn74_XAu1Hs-YwrA-AQ';
 
+// Estructura oficial de 9 columnas (sin columna de estatus)
 var COLUMNAS = [
   { clave: 'marca_temporal', titulo: 'Marca temporal', ancho: 175, alinear: 'center' },
   { clave: 'nombre_nino', titulo: 'Nombre del niño o niña', ancho: 260, alinear: 'left' },
@@ -39,11 +41,79 @@ var COLUMNAS = [
 function onOpen() {
   var ui = SpreadsheetApp.getUi();
   ui.createMenu('Monte de Dios')
-    .addItem('1. Sincronizar y reparar todas las filas desde Supabase', 'sincronizarDesdeSupabase')
-    .addItem('2. Formatear encabezados y membrete', 'limpiarYFormatearHoja')
-    .addItem('3. Corregir filas corridas en hoja actual', 'corregirFilasDesalineadas')
+    .addItem('1. Reparar filas corridas y eliminar columna de estatus', 'repararFilasYEliminarEstado')
+    .addItem('2. Sincronizar y reconstruir todo desde Supabase (180 registros)', 'sincronizarDesdeSupabase')
+    .addItem('3. Formatear encabezados y membrete institucional', 'limpiarYFormatearHoja')
     .addItem('4. Comprobar estado del webhook', 'verificarEstado')
     .addToUi();
+}
+
+/**
+ * Corrige filas desfasadas a partir de la fila 55, elimina la columna de estatus
+ * y aplica el membrete institucional de 9 columnas sin alterar notas manuales.
+ */
+function repararFilasYEliminarEstado() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(HOJA_NOMBRE) || ss.getActiveSheet();
+  sheet.setName(HOJA_NOMBRE);
+
+  // Paso 1: Separar celdas combinadas de los títulos para evitar errores al eliminar columnas
+  for (var r = 1; r <= 3; r++) {
+    try {
+      sheet.getRange(r, 1, 1, sheet.getMaxColumns()).breakApart();
+    } catch (ignore) {}
+  }
+
+  var totalFilas = sheet.getLastRow();
+  var filasReparadas = 0;
+
+  // Paso 2: Alinear filas donde la columna B quedó vacía y los datos cayeron en C..J
+  for (var f = FILA_ENCABEZADOS + 1; f <= totalFilas; f++) {
+    var valB = sheet.getRange(f, 2).getValue().toString().trim();
+    var valC = sheet.getRange(f, 3).getValue().toString().trim();
+
+    if (!valB && valC) {
+      // Tomar las 7 columnas principales: Nombre niño, Fecha, Edad, Padre, Tel Padre, Madre, Tel Madre
+      var bloqueDatos = sheet.getRange(f, 3, 1, 7).getValues()[0];
+      sheet.getRange(f, 2, 1, 7).setValues([bloqueDatos]);
+
+      // Recuperar notas si cayeron en columna 11 (K)
+      var notasDesplazadas = '';
+      if (sheet.getMaxColumns() >= 11) {
+        notasDesplazadas = sheet.getRange(f, 11).getValue();
+        sheet.getRange(f, 11).setValue('');
+      }
+
+      var estadoDesplazado = sheet.getRange(f, 10).getValue();
+      sheet.getRange(f, 9).setValue(estadoDesplazado);
+      sheet.getRange(f, 10).setValue(notasDesplazadas);
+
+      filasReparadas++;
+    }
+  }
+
+  // Paso 3: Eliminar la columna 9 (Estado de presentación) si aún existe
+  if (sheet.getLastColumn() >= 9) {
+    var encabezadoCol9 = sheet.getRange(FILA_ENCABEZADOS, 9).getValue().toString().toLowerCase().trim();
+    if (encabezadoCol9.indexOf('estado') !== -1 || encabezadoCol9.indexOf('estatus') !== -1) {
+      sheet.deleteColumn(9);
+    }
+  }
+
+  // Paso 4: Eliminar columnas excedentes más allá de la columna 9
+  if (sheet.getLastColumn() > COLUMNAS.length) {
+    var exceso = sheet.getLastColumn() - COLUMNAS.length;
+    sheet.deleteColumns(COLUMNAS.length + 1, exceso);
+  }
+
+  // Paso 5: Reconstruir encabezados y membrete institucional
+  asegurarEncabezadosYFormato(sheet);
+
+  var mensaje = 'Proceso completado con éxito:\n' +
+    '- Se alinearon ' + filasReparadas + ' filas corridas.\n' +
+    '- Se eliminó la columna de estatus.\n' +
+    '- La hoja cuenta con 9 columnas exactas y formato institucional.';
+  SpreadsheetApp.getUi().alert(mensaje);
 }
 
 function limpiarYFormatearHoja() {
@@ -56,6 +126,12 @@ function limpiarYFormatearHoja() {
 
 function asegurarEncabezadosYFormato(sheet) {
   var totalCols = COLUMNAS.length;
+
+  for (var r = 1; r <= 3; r++) {
+    try {
+      sheet.getRange(r, 1, 1, sheet.getMaxColumns()).breakApart();
+    } catch (ignore) {}
+  }
 
   if (sheet.getLastColumn() > totalCols) {
     var exceso = sheet.getLastColumn() - totalCols;
@@ -143,7 +219,7 @@ function asegurarEncabezadosYFormato(sheet) {
 
 /**
  * Descarga y reconstruye de forma 100% limpia todos los niños inscritos desde Supabase.
- * Corrige filas corridas, huecos en blanco y columnas desfasadas.
+ * Corrige filas corridas, huecos en blanco y columnas desfasadas con los 180 registros oficiales.
  */
 function sincronizarDesdeSupabase() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -190,35 +266,6 @@ function sincronizarDesdeSupabase() {
   SpreadsheetApp.getUi().alert('Se sincronizaron y repararon exitosamente ' + filas.length + ' registros en la hoja.');
 }
 
-/**
- * Auto-corrección de filas corridas en la hoja actual
- * Detecta cuando la columna B está vacía y los datos cayeron a partir de la columna C
- */
-function corregirFilasDesalineadas() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName(HOJA_NOMBRE) || ss.getActiveSheet();
-  var totalFilas = sheet.getLastRow();
-  var corregidas = 0;
-
-  for (var f = FILA_ENCABEZADOS + 1; f <= totalFilas; f++) {
-    var colB = sheet.getRange(f, 2).getValue().toString().trim(); // Nombre niño
-    var colC = sheet.getRange(f, 3).getValue().toString().trim();
-
-    // Si la columna B está vacía pero la columna C tiene datos (fila corrida hacia la derecha)
-    if (!colB && colC) {
-      // Tomar los valores de C hasta la última columna y desplazarlos una posición a la izquierda
-      var numCols = COLUMNAS.length - 1;
-      var valores = sheet.getRange(f, 3, 1, numCols).getValues()[0];
-      
-      sheet.getRange(f, 2, 1, numCols).setValues([valores]);
-      sheet.getRange(f, COLUMNAS.length).setValue('');
-      corregidas++;
-    }
-  }
-
-  SpreadsheetApp.getUi().alert('Se corrigieron ' + corregidas + ' fila(s) que estaban corridas.');
-}
-
 function doPost(e) {
   var lock = LockService.getScriptLock();
   try {
@@ -247,9 +294,9 @@ function doPost(e) {
       }
 
       if (filasLote.length > 0) {
-        var ultimaFila = Math.max(sheet.getLastRow(), FILA_ENCABEZADOS);
-        sheet.getRange(ultimaFila + 1, 1, filasLote.length, COLUMNAS.length).setValues(filasLote);
-        aplicarFormatoFilas(sheet, ultimaFila + 1, filasLote.length);
+        var ultimaFilaLote = Math.max(sheet.getLastRow(), FILA_ENCABEZADOS);
+        sheet.getRange(ultimaFilaLote + 1, 1, filasLote.length, COLUMNAS.length).setValues(filasLote);
+        aplicarFormatoFilas(sheet, ultimaFilaLote + 1, filasLote.length);
       }
 
       return ContentService.createTextOutput(JSON.stringify({
@@ -258,12 +305,13 @@ function doPost(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
 
-    // Caso 2: Inserción individual
+    // Caso 2: Inserción individual en vivo
     var registro = contenido.data || contenido;
     var fila = mapearRegistroAFila(registro);
 
-    sheet.appendRow(fila);
-    var filaInsertada = sheet.getLastRow();
+    var ultimaFila = Math.max(sheet.getLastRow(), FILA_ENCABEZADOS);
+    var filaInsertada = ultimaFila + 1;
+    sheet.getRange(filaInsertada, 1, 1, COLUMNAS.length).setValues([fila]);
     aplicarFormatoFilas(sheet, filaInsertada, 1);
 
     return ContentService.createTextOutput(JSON.stringify({
@@ -286,6 +334,7 @@ function doGet() {
     success: true,
     servicio: 'Webhook de Presentación de Niños - Monte de Dios',
     zona_horaria: ZONA_HORARIA,
+    columnas: COLUMNAS.length,
     estado: 'Operativo'
   })).setMimeType(ContentService.MimeType.JSON);
 }
@@ -304,16 +353,23 @@ function mapearRegistroAFila(r) {
   var telPadre = telPadreRaw ? "'" + telPadreRaw : '';
   var telMadre = telMadreRaw ? "'" + telMadreRaw : '';
 
+  var nombreNino = (r.nombre_nino || r.nombre || '').toString().trim();
+  var fechaNac = (r.fecha_nacimiento || '').toString().trim();
+  var edadNino = (r.edad_nino || r.edad || '').toString().trim();
+  var nombrePadre = (r.nombre_padre || '').toString().trim();
+  var nombreMadre = (r.nombre_madre || '').toString().trim();
+  var notas = (r.notas || '').toString().trim();
+
   return [
     marcaTemporal,
-    (r.nombre_nino || '').toString().trim(),
-    (r.fecha_nacimiento || '').toString().trim(),
-    (r.edad_nino || '').toString().trim(),
-    (r.nombre_padre || '').toString().trim(),
+    nombreNino,
+    fechaNac,
+    edadNino,
+    nombrePadre,
     telPadre,
-    (r.nombre_madre || '').toString().trim(),
+    nombreMadre,
     telMadre,
-    (r.notas || '').toString().trim()
+    notas
   ];
 }
 
@@ -337,5 +393,5 @@ function aplicarFormatoFilas(sheet, filaInicio, cantidad) {
 }
 
 function verificarEstado() {
-  SpreadsheetApp.getUi().alert('Webhook de presentación de niños activo y enlazado.');
+  SpreadsheetApp.getUi().alert('Webhook de presentación de niños activo y enlazado con 9 columnas oficiales.');
 }

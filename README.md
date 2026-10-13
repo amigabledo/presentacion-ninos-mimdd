@@ -37,6 +37,11 @@ Plataforma oficial para la inscripción pública y gestión administrativa de la
 ---
 
 ## 2. Historial de cambios
+- **13/10/2026**:
+  - Corrección de alineación en Google Sheets: eliminación definitiva de la columna "Estado de presentación" (antigua columna I) y fijación de la estructura oficial de 9 columnas.
+  - Corrección de filas corridas a partir de la fila 55: función automatizada `repararFilasYEliminarEstado` en Google Apps Script que realinea las columnas desplazadas y elimina la columna de estatus.
+  - Inserciones en vivo blindadas con `setValues` directo a 9 columnas para prevenir desfases por celdas vacías.
+  - Función de respaldo y sincronización `sincronizarDesdeSupabase` con los 180 registros oficiales intactos de Supabase.
 - **09/10/2026**:
   - Remediación de seguridad integral: integración de autenticación real con Supabase Auth (`signInWithPassword`) en `GestionLogin.tsx`.
   - Eliminación de bypass sin contraseña y claves en texto claro del frontend.
